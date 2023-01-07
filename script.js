@@ -1,5 +1,5 @@
 const main = document.getElementById('main');
-const addUserBtn = document.getElementById('add-iser');
+const addUserBtn = document.getElementById('add-user');
 const doubleBtn = document.getElementById('double');
 const showMillionairesBtn = document.getElementById('show-millionaires');
 const sortBtn = document.getElementById('sort');
@@ -30,4 +30,31 @@ async function getRandomUser() {
 // Add new obj to data arr
 function addData(obj){
     data.push(obj);
+
+    updateDOM();
 }
+
+// Update DOM
+// Displaying users
+function updateDOM(providedData = data){
+    // Clear main div
+    main.innerHTML = '<h2><strong>Person</strong> Wealth</h2>';
+
+    // Creating an element and adding users to it
+    providedData.forEach(item => {
+        const element = document.createElement('div');
+        element.classList.add('person');
+        element.innerHTML = `<strong>${item.name}</strong> ${formatMoney(item.money)}`;
+
+        main.appendChild(element);
+    });
+}
+
+// Format number as money
+// From https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-strings
+function formatMoney(number){
+    return '$' + number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+}
+
+// Event listeners
+addUserBtn.addEventListener('click', getRandomUser);
